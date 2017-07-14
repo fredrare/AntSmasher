@@ -69,6 +69,8 @@ public class PlayState extends State implements Input.TextInputListener {
     @Override
     public void dispose() {
         mBackground.dispose();
+        for (Bug ref2:bugs)
+            ref2.dispose();
     }
 
     @Override
@@ -97,8 +99,6 @@ public class PlayState extends State implements Input.TextInputListener {
                     Gdx.input.getTextInput(this, "Juego terminado", "", "Introduce tu nombre");
                     AntSmasher.YSPEED=-400;
                     FREQUENCY=100;
-                    for (Bug ref2:bugs)
-                        ref2.dispose();
                     manager.set(new MenuState(manager));
                     break;
                 }
@@ -135,6 +135,7 @@ public class PlayState extends State implements Input.TextInputListener {
 
     @Override
     public void canceled() {
-
+        AntSmasher.firebase.addToFirebase("Anónimo",score);
+        score=0;
     }
 }
