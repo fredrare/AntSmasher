@@ -24,6 +24,7 @@ public class PlayState extends State implements Input.TextInputListener {
     Texture mBackground;
     List<Bug> bugs;
     int x,type,count,score;
+    int xScale,yScale;
     public PlayState(StateManager manager) {
         super(manager);
         mBackground=new Texture("bg_game1.jpg");
@@ -31,6 +32,8 @@ public class PlayState extends State implements Input.TextInputListener {
         alive=true;
         count=FREQUENCY;
         score=0;
+        xScale=AntSmasher.WIDTH/AntSmasher.VIRTUALWIDTH;
+        yScale=AntSmasher.HEIGHT/AntSmasher.VIRTUALHEIGHT;
     }
 
     @Override
@@ -45,9 +48,9 @@ public class PlayState extends State implements Input.TextInputListener {
                                 yTouch = Gdx.input.getY();
                         int
                                 xMin = (int) ref.getPosition().x,
-                                xMax = xMin + image.getRegionWidth()*AntSmasher.WIDTH/AntSmasher.VIRTUALWIDTH,
-                                yMin = AntSmasher.HEIGHT - ((int) ref.getPosition().y) - image.getRegionHeight()*AntSmasher.HEIGHT/AntSmasher.VIRTUALHEIGHT,
-                                yMax = yMin + image.getRegionHeight()*AntSmasher.HEIGHT/AntSmasher.VIRTUALHEIGHT;
+                                xMax = xMin + image.getRegionWidth()*xScale,
+                                yMin = AntSmasher.HEIGHT - ((int) ref.getPosition().y) - image.getRegionHeight()*yScale,
+                                yMax = yMin + image.getRegionHeight()*yScale;
                         if (xTouch <= xMax && xTouch >= xMin &&
                                 yTouch <= yMax && yTouch >= yMin) {
                             FREQUENCY*=0.9;
@@ -78,7 +81,7 @@ public class PlayState extends State implements Input.TextInputListener {
         handleInput();
         if(alive) {
             if (count++ >= FREQUENCY) {
-                x = (int) (Math.random() * (AntSmasher.WIDTH-100*AntSmasher.WIDTH/AntSmasher.VIRTUALWIDTH) + 1);
+                x = (int) (Math.random() * (AntSmasher.WIDTH-100*xScale) + 1);
                 type = (int) (Math.random() * 3);
                 if (type == 0) {
                     BlackAnt bug = new BlackAnt(x);
@@ -115,14 +118,14 @@ public class PlayState extends State implements Input.TextInputListener {
                 sb.draw(ref.getRegion(),
                         ref.getPosition().x,
                         ref.getPosition().y,
-                        ref.getRegion().getRegionWidth()*AntSmasher.WIDTH/AntSmasher.VIRTUALWIDTH,
-                        ref.getRegion().getRegionHeight()*AntSmasher.HEIGHT/AntSmasher.VIRTUALHEIGHT);
+                        ref.getRegion().getRegionWidth()*xScale,
+                        ref.getRegion().getRegionHeight()*yScale);
             else
                 sb.draw(ref.getImage(),
                         ref.getPosition().x,
                         ref.getPosition().y,
-                        ref.getImage().getWidth()*AntSmasher.WIDTH/AntSmasher.VIRTUALWIDTH,
-                        ref.getImage().getHeight()*AntSmasher.HEIGHT/AntSmasher.VIRTUALHEIGHT);
+                        ref.getImage().getWidth()*xScale,
+                        ref.getImage().getHeight()*yScale);
         }
         sb.end();
     }
